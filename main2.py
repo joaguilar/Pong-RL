@@ -9,6 +9,10 @@ p.Play()
 # clock = pygame.time.Clock()
 # previous_status = Pong_Status(0,0,0,0)
 # while True:
+    # for event in pygame.event.get():
+    #     if event.type == pygame.QUIT:
+    #         pygame.quit()
+    #         sys.exit()
 #     status = p.OnePlay()
 #     if (not status.equals(previous_status)):
 #         print(

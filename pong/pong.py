@@ -89,6 +89,7 @@ class Pong:
 
         #Restarts
         self.restarts = 0
+        self.reset=False
 
 
     def update_score(self):
@@ -99,12 +100,19 @@ class Pong:
         return
 
     def ball_restart(self):
+        # self.ball.center = (
+        #     self.screen_width/2-self.ball_size/2+random.randint(-25,25),
+        #     self.screen_height/2-self.ball_size/2+random.randint(-25,25))
         self.ball.center = (
-            self.screen_width/2-self.ball_size/2,
-            self.screen_height/2-self.ball_size/2)
+            self.screen_width/2-self.ball_size/2+random.randint(-25,25),
+            random.randint(self.ball_size,self.screen_height-self.ball_size))
         self.ball_speed_x *= random.choice((1,-1)) 
         self.ball_speed_y *= random.choice((1,-1)) 
+        # self.ball_speed_x = random.randint(-25,25)
+        # self.ball_speed_y = random.randint(-25,25)
         self.restarts += 1
+        self.reset = True
+        print("Reset, (X,Y)=({},{})".format(self.ball_speed_x,self.ball_speed_y))
         return 
 
 
@@ -112,6 +120,11 @@ class Pong:
         # Move the ball:
             self.ball.x += self.ball_speed_x
             self.ball.y += self.ball_speed_y
+
+            if (self.reset):
+                self.reset = False
+                # self.ball_speed_x = self.STEP
+                # self.ball_speed_y = self.STEP
 
             # Collisions with the sides of the screen:
             if self.ball.top <= 0 or self.ball.bottom >= self.screen_height:
@@ -150,61 +163,24 @@ class Pong:
     def move_player(self,player1:bool,up:bool):
         delta = self.STEP
         if up:
-            delta = self.STEP * -1
-
-        if player1:
-            self.player_speed_1 += delta
+            # delta = self.STEP * -1
+            if player1:
+                #self.player1.top += delta
+                # self.player_speed_1 -= delta
+                self.player_animation(self.player1,delta*-1)
+            else: 
+                self.player_animation(self.player2,delta*-1)
         else:
-            self.player_speed_2 += delta
-
+            if player1:
+                self.player_animation(self.player1,delta)
+            else: 
+                self.player_animation(self.player2,delta)
 
     def OnePlay(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_DOWN:
-            #         self.player_speed_2 += self.STEP
-            #     if event.key == pygame.K_UP:
-            #         self.player_speed_2 -= self.STEP
-            #     if event.key == pygame.K_s:
-            #         self.player_speed_1 += self.STEP
-            #     if event.key == pygame.K_w:
-            #         self.player_speed_1 -= self.STEP
-            # if event.type == pygame.KEYUP:
-            #     if event.key == pygame.K_DOWN:
-            #         self.player_speed_2 -= self.STEP
-            #     if event.key == pygame.K_UP:
-            #         self.player_speed_2 += self.STEP
-            #     if event.key == pygame.K_s:
-            #         self.player_speed_1 -= self.STEP
-            #     if event.key == pygame.K_w:
-            #         self.player_speed_1 += self.STEP
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    self.move_player(False,False)
-                if event.key == pygame.K_UP:
-                    self.move_player(False,True)
-                if event.key == pygame.K_s:
-                    self.move_player(True,False)
-                if event.key == pygame.K_w:
-                    self.move_player(True,True)
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_DOWN:
-                    self.move_player(False,True)
-                if event.key == pygame.K_UP:
-                    self.move_player(False,False)
-                if event.key == pygame.K_s:
-                    self.move_player(True,True)
-                if event.key == pygame.K_w:
-                    self.move_player(True,False)
 
 
-        self.player_animation(self.player1,self.player_speed_1)
-        self.player_animation(self.player2,self.player_speed_2)
+        # self.player_animation(self.player1,self.player_speed_1)
+        # self.player_animation(self.player2,self.player_speed_2)
 
         self.ball_animation()
         
@@ -224,6 +200,30 @@ class Pong:
     def Play(self):
         previous_status = Pong_Status(0,0,0,0)
         while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_DOWN:
+                        self.player_speed_2 += 7
+                    if event.key == pygame.K_UP:
+                        self.player_speed_2 -= 7
+                    if event.key == pygame.K_s:
+                        self.player_speed_1 += 7
+                    if event.key == pygame.K_w:
+                        self.player_speed_1 -= 7
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_DOWN:
+                        self.player_speed_2 -= 7
+                    if event.key == pygame.K_UP:
+                        self.player_speed_2 += 7
+                    if event.key == pygame.K_s:
+                        self.player_speed_1 -= 7
+                    if event.key == pygame.K_w:
+                        self.player_speed_1 += 7
+            self.player_animation(self.player1,self.player_speed_1)
+            self.player_animation(self.player2,self.player_speed_2)
             status = self.OnePlay()
             if (not status.equals(previous_status)):
                 print(
