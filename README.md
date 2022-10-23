@@ -1,6 +1,11 @@
 # Pong-RL
 Pong Implementation to try out Reinforcement Learning
 
+Based on these two tutorials:
+
+1. [Learning Pygame by making Pong](https://www.youtube.com/watch?v=Qf3-aDXG8q4) - Base implementation of Pong
+2. [Python Pong AI Tutorial - Using NEAT](https://www.youtube.com/watch?v=2f6TmKm7yx0) - Not using NEAT here but got some ideas
+
 # Installation
 
 1. Create a conda environment:
