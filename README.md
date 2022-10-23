@@ -26,6 +26,18 @@ conda activate .\Pong-RL
 pip install -r requirements.txt
 ```
 
+4. Run it for 2 players (W/S for left paddle, UP/DOWN for right paddle):
+
+```
+python main2.py
+```
+
+5. Run it with s simple ai (W/S for left paddle, right paddle is AI controlled):
+
+```
+python pong_ai.py
+```
+
 # Structure
 
 This game was developed using [pygame](https://www.pygame.org/) as a way to both learn pygame and practice Reinforcement Learning, including how to connect the RL process with a pygame game.
